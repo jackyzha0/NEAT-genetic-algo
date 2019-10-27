@@ -26,4 +26,3 @@ Math Behind Crossing Over/Mutation
 How GAs Approximate Global Minima/Maxima of the Fitness Function
 - How the biological/evolutionary fitness of individuals should be represented mathematically
 - Optimization of individual traits to fit the function and reach a maximum with many generations
->>>>>>> Stashed changes
