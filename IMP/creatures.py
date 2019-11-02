@@ -2,20 +2,29 @@
 import math
 
 class Creature():
-    def __init__(self, x, y, genomeLength = 10):
+    def __init__(self, x, y, size):
         self.x = x
         self.y = y
-        self.genome = self.genGenome(genomeLength)
-        # fitness
-        # facing
-        # vel
-        # size
+        self.size = size
+        self.energy = 100. # starting energy, dies if energy = 0
+        self.facing = 0 # [-pi, pi]
+        self.vel = 0
+        self.dead = False
 
-    def genGenome(self, length):
-        res = []
-        for x in range(length):
-            res.append(chr(random.randint(0, 97)))
-            
     def tick(self):
-        # update properties using facing and vel
-        pass
+        # consume energy, check if dead
+        self.energy -= self.vel + (0.1 * self.size)
+        if self.energy <= 0:
+            self.dead = True
+
+        # update x,y based on vel and facing
+        dx = math.sin(self.facing) * self.vel
+        dy = math.cos(self.facing) * self.vel
+        x += dx
+        y += dy
+
+    def accel(self, a):
+        self.vel += a
+
+    def turn(self, r):
+        self.facing += r
