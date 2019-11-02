@@ -20,8 +20,8 @@ class Creature():
         # update x,y based on vel and facing
         dx = math.sin(self.facing) * self.vel
         dy = math.cos(self.facing) * self.vel
-        x += dx
-        y += dy
+        self.x += dx
+        self.y += dy
 
     def accel(self, a):
         self.vel += a

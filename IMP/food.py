@@ -1,7 +1,8 @@
 # Class definition for food
+import random
 
 class Food():
-    def __init__(self, x, y, val):
+    def __init__(self, x, y, size):
         self.x = x
         self.y = y
-        self.val = val
+        self.size = size
