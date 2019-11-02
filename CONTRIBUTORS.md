@@ -12,7 +12,11 @@
  - `git commit -m "short description"`
  - `git push origin NAME-OF-BRANCH`
 5. Go to GitHub and create a pull request to merge your branch into master.
+6. Request reviews and delete branch after you're finished!
 
+## Keeping up to date with changes
+
+It's as simple as `git pull origin master`
 
 ## Naming Conventions
 All branches should be of the form `name-number-desc`, where `name` is one of `IMP`, `MATH`, or `POSTER`, `number` is the ticket number on Asana, and `desc` is a short 3-5 word description of your PR.
