@@ -14,6 +14,7 @@ class Board():
         self.food = []  # initialized later
         self.creatures = []  # initialized later
         self.GEN_TIMEOUT = 1800
+        self.FOOD_GEN_DELTA = 5
 
     def board_tick(self):
         # food generation
@@ -21,7 +22,7 @@ class Board():
             # spawn if random exceeds threshold
             if random.random() > self.foodspawnthresh:
                 # new x,y position with +/- 5 delta from current food position
-                x, y = f.x + random.randint(-5, 5), f.y + random.randint(-5, 5)
+                x, y = f.x + random.randint(-self.FOOD_GEN_DELTA, self.FOOD_GEN_DELTA), f.y + random.randint(-self.FOOD_GEN_DELTA, self.FOOD_GEN_DELTA)
 
                 # if in range, add new food to foodlist
                 if x > 0 and x < self.width and y > 0 and y < self.height:
@@ -58,13 +59,13 @@ class Board():
 
         # init food
         self.food = []
-        for _ in range(len(genomes)*2):
+        # create two pieces of food for every creature
+        for _ in range(len(x)*2):
             x = random.randint(0, self.width)
             y = random.randint(0, self.height)
             size = random.random()*3
             f = food.Food(x, y, size)
             self.food.append(f)
-        # create two pieces of food for every creature
 
         nets = []
         g_l = []
