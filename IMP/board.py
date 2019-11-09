@@ -7,27 +7,32 @@ import neat
 
 class Board():
     def __init__(self, w, h, foodspawn = 0.1):
-        self.width = w
+        self.width = w  # dimensions of board
         self.height = h
         self.foodspawnthresh = 1 - foodspawn
-        self.generation = 0
-        self.food = [] # initialized later
-        self.creatures = [] # initialized later
+        self.generation = 0  # current generation
+        self.food = []  # initialized later
+        self.creatures = []  # initialized later
+        self.GEN_TIMEOUT = 1800
 
     def board_tick(self):
-        # iterate through each food item and spawn with prob
+        # food generation
         for f in self.food:
+            # spawn if random exceeds threshold
             if random.random() > self.foodspawnthresh:
+                # new x,y position with +/- 5 delta from current food position
                 x, y = f.x + random.randint(-5, 5), f.y + random.randint(-5, 5)
+
+                # if in range, add new food to foodlist
                 if x > 0 and x < self.width and y > 0 and y < self.height:
                     self.food.append(food.Food(x, y, size=random.random() * 3))
 
         # !!! check for collisions
 
     def closest(self, x, y, size):
-        prey_min_r = 1e10
-        prey_min_theta = 0
-        predator_min_r = 1e10
+        prey_min_r = math.inf  # closest distance doesnt exist, assume infinity
+        prey_min_theta = 0  # angle shouldnt matter when dist is infinity
+        predator_min_r = math.inf
         predator_min_theta = 0
 
         for c in self.food and self.creatures:
@@ -63,7 +68,7 @@ class Board():
             self.creatures.append(creatures.Creature(x=random.randint(0, self.width), y=random.randint(0, self.height), size=random.randint(1,10)))
             g_l.append(genome)
 
-        while self.creatures and self.ticks_total < 1800:
+        while self.creatures and self.ticks_total < self.GEN_TIMEOUT:
             self.board_tick()
             for i, creature in enumerate(self.creatures):
                 g_l[i].fitness += 1
@@ -73,9 +78,9 @@ class Board():
                     # !!! pop g_l, nets, creatures
                     pass
                 else:
-                    preyr, preyt, predr, predt = self.closest(creature.x, creature.y, creature.size)
+                    closest = self.closest(creature.x, creature.y, creature.size)
 
-                    net_out = nets[self.creatures.index(creature)].activate([preyr, preyt, predr, predt])
+                    net_out = nets[self.creatures.index(creature)].activate(closest)
 
                     creature.accel(net_out[0])
                     creature.turn(net_out[1] * math.pi)
