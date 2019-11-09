@@ -1,0 +1,34 @@
+\newpage
+\subsection{\underline{Fitness Function}}
+
+In our simulation, we want to provide incentive for individuals who stay alive the longest. This models reality, as individuals who stay alive longer are able to reproduce more, thus have a greater biological fitness.
+
+\ms
+\nid At the end of one generation, we have a measure of performance from each individual. So let the fitness function be defined as the following, where $t$ is the time in seconds an individuals stays alive:
+
+$$f_i(t)=t^2$$
+
+\ms
+\nid This function was chosen to disproportionately incentivizes genetics from individuals which had stayed alive longer. This means that over many generations, we should see a trend towards genetics from individuals who stayed alive the longest, i.e. genetics indicating high biological fitness. 
+
+\ms
+\nid After running this calculation for all $p$ individuals in a generation, we will have a set of all individual fitnesses:
+
+$$
+F_g=\{f_1, f_2, f_3, \ldots, f_{p}\}
+$$
+
+\nid To find the proportion of an individual's contribution to the gene pool of a population, we find the ratio of an individual's fitness divided by sum of all the individual fitness values of the population. So if $W_i$ is the weight of fitness each individual holds in the population's gene pool, then:
+
+$$
+W_i=\frac{f_i}{\mathlarger{\sum_{k=1}^{p} f_k}}
+$$
+
+\nid From here, we can determine how many offspring an individual will produce: 
+$\frac{f_i}{\bar{f}}$
+\bi
+\item A ratio we can use in later calculations, proportional to the fitness of an individual in relation to the mean individual fitness in the population.
+\ei
+
+\ms
+\nid Additionally, we will create a function which takes in a fitness ranking of an individual, and outputs the number of offspring that an individual can have.

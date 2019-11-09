@@ -1,0 +1,14 @@
+\newpage
+\subsection{\underline{Crossover}}
+\begin{enumerate}
+\item Choose a pair of individuals which were selected to reproduce. 
+\item Combine each pair's genome into one
+\bi
+\item Using randomized selection, choose a number $c$ in range $[1,L-1]$ where $L$ is the character length of the genome string of the species.
+\item Now take the substring of the first individual's genome from $[0, c]$ and append it to the substring of the second individual's genome from $(c, L]$. 
+\item This will result in a new combined genome with genes from each parent.
+\item Create a specified amount of offspring based off the fitness function for each individual, and summing these values. Let function $O$
+\item $O$
+\ei
+\item Repeat $2.$ for each pair of individuals selected to reproduce in the population. After this process is complete, a new set of $500$ offspring should be created, representing the next generation of the species. 
+\end{enumerate}
