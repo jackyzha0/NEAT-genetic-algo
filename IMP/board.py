@@ -2,10 +2,8 @@
 import creatures
 import food
 import random
-import neat
 import math
-import os
-import pygame
+import neat
 
 class Board():
     def __init__(self, w, h, foodspawn = 0.1):
@@ -54,7 +52,7 @@ class Board():
         self.creatures = []
 
         # init food
-        self.food = [food.Food(x=random.randint(0, self.width), y=random.randint(0, self.height), val=random.random(0, 3)) for _ in range(len(genomes) * 2)] # create two pieces of food for every creature
+        self.food = [food.Food(x=random.randint(0, self.width), y=random.randint(0, self.height), val=random.random()*3) for _ in range(len(genomes) * 2)] # create two pieces of food for every creature
 
         nets = []
         g_l = []
@@ -86,36 +84,3 @@ def find_r_theta(x1, y1, x2, y2):
     theta = math.tan((x2 - x1) / (y2 - y1 + 1e-8))
     r = math.sqrt((x2-x1)**2 - (y2-y1)**2)
     return r, theta
-
-def run(config_file):
-    config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                         config_file)
-
-    p = neat.Population(config)
-
-    # Add a stdout reporter to show progress in the terminal.
-    p.add_reporter(neat.StdOutReporter(True))
-    stats = neat.StatisticsReporter()
-    p.add_reporter(stats)
-
-    # Run for up to 50 generations.
-    b = Board(500, 500)
-    top = p.run(b.sim_one_gen, 50)
-
-    # show final stats
-    print('\nBest genome:\n{!s}'.format(top))
-
-def render(self, screen):
-    for creature in self.creatures:
-        creature.render(screen)
-    for food in self.food:
-        food.render(screen)
-
-if __name__ == '__main__':
-    # Determine path to configuration file. This path manipulation is
-    # here so that the script will run successfully regardless of the
-    # current working directory.
-    local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, 'species_config.txt')
-    run(config_path)
