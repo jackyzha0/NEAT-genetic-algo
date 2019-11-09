@@ -21,12 +21,6 @@ def run(config_file):
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))
 
-def render(self, screen):
-    for creature in self.creatures:
-        creature.render(screen)
-    for food in self.food:
-        food.render(screen)
-
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'species_config.txt')

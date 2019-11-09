@@ -7,27 +7,33 @@ import neat
 
 class Board():
     def __init__(self, w, h, foodspawn = 0.1):
-        self.width = w
+        self.width = w  # dimensions of board
         self.height = h
         self.foodspawnthresh = 1 - foodspawn
-        self.generation = 0
-        self.food = [] # initialized later
-        self.creatures = [] # initialized later
+        self.generation = 0  # current generation
+        self.food = []  # initialized later
+        self.creatures = []  # initialized later
+        self.GEN_TIMEOUT = 1800
+        self.FOOD_GEN_DELTA = 5
 
     def board_tick(self):
-        # iterate through each food item and spawn with prob
+        # food generation
         for f in self.food:
+            # spawn if random exceeds threshold
             if random.random() > self.foodspawnthresh:
-                x, y = f.x + self.random.randint() * 10, f.y + self.random.randint() * 10
+                # new x,y position with +/- 5 delta from current food position
+                x, y = f.x + random.randint(-self.FOOD_GEN_DELTA, self.FOOD_GEN_DELTA), f.y + random.randint(-self.FOOD_GEN_DELTA, self.FOOD_GEN_DELTA)
+
+                # if in range, add new food to foodlist
                 if x > 0 and x < self.width and y > 0 and y < self.height:
-                    self.food.append(food.Food(x, y, val=random.random(0, 3)))
+                    self.food.append(food.Food(x, y, size=random.random() * 3))
 
         # !!! check for collisions
 
     def closest(self, x, y, size):
-        prey_min_r = 1e10
-        prey_min_theta = 0
-        predator_min_r = 1e10
+        prey_min_r = math.inf  # closest distance doesnt exist, assume infinity
+        prey_min_theta = 0  # angle shouldnt matter when dist is infinity
+        predator_min_r = math.inf
         predator_min_theta = 0
 
         for c in self.food and self.creatures:
@@ -52,7 +58,14 @@ class Board():
         self.creatures = []
 
         # init food
-        self.food = [food.Food(x=random.randint(0, self.width), y=random.randint(0, self.height), val=random.random()*3) for _ in range(len(genomes) * 2)] # create two pieces of food for every creature
+        self.food = []
+        # create two pieces of food for every creature
+        for _ in range(len(x)*2):
+            x = random.randint(0, self.width)
+            y = random.randint(0, self.height)
+            size = random.random()*3
+            f = food.Food(x, y, size)
+            self.food.append(f)
 
         nets = []
         g_l = []
@@ -60,10 +73,10 @@ class Board():
             genome.fitness = 0  # start with fitness level of 0
             net = neat.nn.FeedForwardNetwork.create(genome, config)
             nets.append(net)
-            self.creatures.append(creatures.Creature(x=random.randint(0, self.width), y=random.randint(0, self.height)))
+            self.creatures.append(creatures.Creature(x=random.randint(0, self.width), y=random.randint(0, self.height), size=random.randint(1,10)))
             g_l.append(genome)
 
-        while self.creatures and self.ticks_total < 1800:
+        while self.creatures and self.ticks_total < self.GEN_TIMEOUT:
             self.board_tick()
             for i, creature in enumerate(self.creatures):
                 g_l[i].fitness += 1
@@ -73,9 +86,9 @@ class Board():
                     # !!! pop g_l, nets, creatures
                     pass
                 else:
-                    preyr, preyt, predr, predt = self.closest(creature.x, creature.y, creature.size)
+                    closest = self.closest(creature.x, creature.y, creature.size)
 
-                    net_out = nets[creatures.index(creature)].activate(preyr, preyt, predr, predt)
+                    net_out = nets[self.creatures.index(creature)].activate(closest)
 
                     creature.accel(net_out[0])
                     creature.turn(net_out[1] * math.pi)
@@ -88,5 +101,5 @@ class Board():
 
 def find_r_theta(x1, y1, x2, y2):
     theta = math.tan((x2 - x1) / (y2 - y1 + 1e-8))
-    r = math.sqrt((x2-x1)**2 - (y2-y1)**2)
+    r = math.sqrt((x2-x1)**2 + (y2-y1)**2)
     return r, theta
