@@ -3,7 +3,7 @@ import creatures
 import board
 
 (WIDTH, HEIGHT) = (1000, 800)
-BACKGROUND_COLOR = (204,255,204)
+BACKGROUND_COLOR = (255,255,255) # white
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('NATURAL SELECTION SIMULATION')

@@ -1,13 +1,13 @@
 # Class definition for creatures
 import math
 import pygame
+from random import randrange
 
 class Creature():
     def __init__(self, x, y, size):
         self.x = x
         self.y = y
         self.size = size
-        self.colour = (0,102,0)
         self.energy = 100. # starting energy, dies if energy = 0
         self.angle = 0 # [-pi, pi]
         self.velocity = 0
@@ -26,11 +26,12 @@ class Creature():
         self.y += dy
 
     def render(self, screen):
+        colour = (randrange(254), randrange(254), randrange(254))
         #outline
-        pygame.draw.circle(screen, self.colour,
+        pygame.draw.circle(screen, colour,
         (self.x, self.y), self.size, 2)
         #solid
-        pygame.draw.circle(screen, self.colour,
+        pygame.draw.circle(screen, colour,
         (self.x, self.y), self.size - 5, 0)
 
 
