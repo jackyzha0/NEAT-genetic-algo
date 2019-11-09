@@ -1,6 +1,7 @@
 # Class definition for creatures
 import math
 import pygame
+import random
 
 class Creature():
     def __init__(self, x: int, y: int, size: int):
@@ -10,7 +11,7 @@ class Creature():
         self.x = x
         self.y = y
         self.size = size  # determines what it can eat, also affects energy consumption
-        self.colour = (0,102,0)
+        self.colour = (random.randrange(254), random.randrange(254), random.randrange(254))
         self.energy = 100.  # starting energy, dies if energy = 0
         self.angle = 0  # [-pi, pi]
         self.velocity = 0
@@ -36,9 +37,10 @@ class Creature():
         '''
         Blit self onto PyGame surface
         '''
+
         # outline
         pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size, 2)
-
+        
         # solid
         pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size - 5, 0)
 
