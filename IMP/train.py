@@ -18,9 +18,9 @@ def run(config_file):
     p.add_reporter(stats)
 
     # setup pygame
-    WIDTH = 1000
-    HEIGHT = 1000
-    BACKGROUND_COLOR = (255,255,255) # white
+    WIDTH = 500
+    HEIGHT = 500
+    BACKGROUND_COLOR = (220,220,220) # white
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('NATURAL SELECTION SIMULATION')
     screen.fill(BACKGROUND_COLOR)
@@ -28,7 +28,7 @@ def run(config_file):
     # Run for up to 50 generations.
     b = board.Board(WIDTH, HEIGHT, screen)
 
-    top = p.run(b.sim_one_gen, 50)
+    top = p.run(b.sim_one_gen, 150)
 
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))

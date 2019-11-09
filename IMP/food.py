@@ -10,7 +10,7 @@ class Food():
         '''
         self.x = x
         self.y = y
-        self.colour = (255, 0, 102)
+        self.colour = (255, 0, 0)
         self.size = size  # determines what kind of creatures can eat it
                           # and how much energy it gives
 

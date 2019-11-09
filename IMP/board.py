@@ -7,16 +7,16 @@ import pygame
 import neat
 
 class Board():
-    def __init__(self, w, h, screen, foodspawn = 0.01):
+    def __init__(self, w, h, screen, foodspawn = 0.1):
         self.width = w  # dimensions of board
         self.height = h
         self.foodspawnthresh = 1 - foodspawn
         self.generation = 0  # current generation
         self.food = []  # initialized later
         self.creatures = []  # initialized later
-        self.GEN_TIMEOUT = 1800  # Constant for generation timeout
+        self.GEN_TIMEOUT = 3600  # Constant for generation timeout
         self.FOOD_GEN_DELTA = 5  # Constant for food generation position change
-        self.MAX_FOOD = 20
+        self.MAX_FOOD = 250
         self.screen = screen
 
     def board_tick(self):
@@ -44,14 +44,12 @@ class Board():
 
                 if c.size > c2.size:          # check which creature is bigger
                     self.creatures.pop(i2)    # kill the smaller one
-                    print('pop')
                     c.energy += c2.size       # increase the bigger one's energy by the smaller one's size
                 else:
                     self.creatures.pop(i)
-                    print('pop 2')
                     c2.energy += c.size
 
-        if self.ticks_total % 30 == 0:
+        # if self.ticks_total % 30 == 0:
             self.render()
 
         self.ticks_total += 1
@@ -128,7 +126,7 @@ class Board():
                     g_l.pop(c_i)
                     self.creatures.pop(c_i)
                     nets.pop(c_i)
-                    print("just killed {id}, number surviving {l}".format(id=c_i, l = len(self.creatures)))
+                    # print("just killed {id}, number surviving {l}".format(id=c_i, l = len(self.creatures)))
                 else:
                     closest = self.closest(creature.x, creature.y, creature.size)
 
@@ -146,10 +144,11 @@ class Board():
         Small function to blit all creatures and food onto
         PyGame Display
         '''
-        for creature in self.creatures:
-            creature.render(self.screen)
-        for food in self.food:
-            food.render(self.screen)
+        pass
+        # for creature in self.creatures:
+        #     creature.render(self.screen)
+        # for food in self.food:
+        #     food.render(self.screen)
 
 def find_r_theta(x1: int, y1: int, x2: int, y2: int) -> (float, float):
     '''
