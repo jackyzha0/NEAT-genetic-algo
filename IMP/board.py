@@ -18,9 +18,9 @@ class Board():
         # iterate through each food item and spawn with prob
         for f in self.food:
             if random.random() > self.foodspawnthresh:
-                x, y = f.x + self.random.randint() * 10, f.y + self.random.randint() * 10
+                x, y = f.x + random.randint(-5, 5), f.y + random.randint(-5, 5)
                 if x > 0 and x < self.width and y > 0 and y < self.height:
-                    self.food.append(food.Food(x, y, val=random.random(0, 3)))
+                    self.food.append(food.Food(x, y, size=random.random() * 3))
 
         # !!! check for collisions
 
@@ -52,7 +52,7 @@ class Board():
         self.creatures = []
 
         # init food
-        self.food = [food.Food(x=random.randint(0, self.width), y=random.randint(0, self.height), val=random.random()*3) for _ in range(len(genomes) * 2)] # create two pieces of food for every creature
+        self.food = [food.Food(x=random.randint(0, self.width), y=random.randint(0, self.height), size=random.random()*3) for _ in range(len(genomes)*2)]  # create two pieces of food for every creature
 
         nets = []
         g_l = []
@@ -60,7 +60,7 @@ class Board():
             genome.fitness = 0  # start with fitness level of 0
             net = neat.nn.FeedForwardNetwork.create(genome, config)
             nets.append(net)
-            self.creatures.append(creatures.Creature(x=random.randint(0, self.width), y=random.randint(0, self.height)))
+            self.creatures.append(creatures.Creature(x=random.randint(0, self.width), y=random.randint(0, self.height), size=random.randint(1,10)))
             g_l.append(genome)
 
         while self.creatures and self.ticks_total < 1800:
@@ -75,7 +75,7 @@ class Board():
                 else:
                     preyr, preyt, predr, predt = self.closest(creature.x, creature.y, creature.size)
 
-                    net_out = nets[creatures.index(creature)].activate(preyr, preyt, predr, predt)
+                    net_out = nets[self.creatures.index(creature)].activate([preyr, preyt, predr, predt])
 
                     creature.accel(net_out[0])
                     creature.turn(net_out[1] * math.pi)
@@ -88,5 +88,5 @@ class Board():
 
 def find_r_theta(x1, y1, x2, y2):
     theta = math.tan((x2 - x1) / (y2 - y1 + 1e-8))
-    r = math.sqrt((x2-x1)**2 - (y2-y1)**2)
+    r = math.sqrt((x2-x1)**2 + (y2-y1)**2)
     return r, theta

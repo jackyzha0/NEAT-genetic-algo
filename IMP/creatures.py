@@ -15,13 +15,13 @@ class Creature():
 
     def tick(self):
         # consume energy, check if dead
-        self.energy -= self.vel + (0.1 * self.size)
+        self.energy -= self.velocity + (0.1 * self.size)
         if self.energy <= 0:
             self.dead = True
 
-        # update x,y based on vel and facing
-        dx = math.sin(self.facing) * self.vel
-        dy = math.cos(self.facing) * self.vel
+        # update x,y based on vel and angle
+        dx = math.sin(self.angle) * self.velocity
+        dy = math.cos(self.angle) * self.velocity
         self.x += dx
         self.y += dy
 
