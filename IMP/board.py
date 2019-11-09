@@ -57,7 +57,14 @@ class Board():
         self.creatures = []
 
         # init food
-        self.food = [food.Food(x=random.randint(0, self.width), y=random.randint(0, self.height), size=random.random()*3) for _ in range(len(genomes)*2)]  # create two pieces of food for every creature
+        self.food = []
+        for _ in range(len(genomes)*2):
+            x = random.randint(0, self.width)
+            y = random.randint(0, self.height)
+            size = random.random()*3
+            f = food.Food(x, y, size)
+            self.food.append(f)
+        # create two pieces of food for every creature
 
         nets = []
         g_l = []
