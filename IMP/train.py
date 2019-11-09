@@ -3,10 +3,12 @@ import board
 import os
 
 def run(config_file):
+    # read config from species_config.txt
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_file)
 
+    # initialize population
     p = neat.Population(config)
 
     # Add a stdout reporter to show progress in the terminal.
