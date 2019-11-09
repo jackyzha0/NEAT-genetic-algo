@@ -1,4 +1,5 @@
 # Class definition for food
+import random
 
 import pygame
 

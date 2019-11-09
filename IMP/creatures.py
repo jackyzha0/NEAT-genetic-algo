@@ -20,10 +20,10 @@ class Creature():
             self.dead = True
 
         # update x,y based on vel and facing
-        dx = math.sin(self.angle) * self.velocity
-        dy = math.cos(self.angle) * self.velocity
-        x += dx
-        y += dy
+        dx = math.sin(self.facing) * self.vel
+        dy = math.cos(self.facing) * self.vel
+        self.x += dx
+        self.y += dy
 
     def render(self, screen):
         #outline

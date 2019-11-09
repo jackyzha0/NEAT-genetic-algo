@@ -9,7 +9,11 @@
  - Genomic encoding
  - Functions to handle crossover/mutation
  - Fitness function
- 
+
 ## User Interface
  - Display game
  - Display statistics
+
+#### Requirements
+ * `pygame`
+ * `neat-python`
