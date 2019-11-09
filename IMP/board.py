@@ -80,6 +80,12 @@ class Board():
                     creature.accel(net_out[0])
                     creature.turn(net_out[1] * math.pi)
 
+    def render(self, screen):
+        for creature in self.creatures:
+            creature.render(screen)
+        for food in self.food:
+            food.render(screen)
+
 def find_r_theta(x1, y1, x2, y2):
     theta = math.tan((x2 - x1) / (y2 - y1 + 1e-8))
     r = math.sqrt((x2-x1)**2 - (y2-y1)**2)
