@@ -21,6 +21,7 @@ def run(config_file):
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))
 
+
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'species_config.txt')
