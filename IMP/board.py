@@ -5,6 +5,7 @@ import random
 import neat
 import math
 import os
+import pygame
 
 class Board():
     def __init__(self, w, h, foodspawn = 0.1):
@@ -104,6 +105,12 @@ def run(config_file):
 
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))
+
+def render(self, screen):
+    for creature in self.creatures:
+        creature.render(screen)
+    for food in self.food:
+        food.render(screen)
 
 if __name__ == '__main__':
     # Determine path to configuration file. This path manipulation is
