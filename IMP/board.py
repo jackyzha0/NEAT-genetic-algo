@@ -28,7 +28,17 @@ class Board():
                 if x > 0 and x < self.width and y > 0 and y < self.height:
                     self.food.append(food.Food(x, y, size=random.random() * 3))
 
-        # !!! check for collisions
+        for i, c in enumerate(self.creatures):
+            for i2 in c.collide(self.creatures[i+1:]):
+                c2 = self.creatures[i2]       # get creature from list using index
+
+                if c.size > c2.size:          # check which creature is bigger
+                    self.creatures.pop(i2)    # kill the smaller one
+                    c.energy += c2.size       # increase the bigger one's energy by the smaller one's size
+                else:
+                    self.creatures.pop(i)
+                    c2.energy += c.size
+
 
     def closest(self, x, y, size):
         prey_min_r = math.inf  # closest distance doesnt exist, assume infinity
@@ -60,7 +70,7 @@ class Board():
         # init food
         self.food = []
         # create two pieces of food for every creature
-        for _ in range(len(x)*2):
+        for _ in range(len(genomes)*2):
             x = random.randint(0, self.width)
             y = random.randint(0, self.height)
             size = random.random()*3

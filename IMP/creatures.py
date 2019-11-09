@@ -34,8 +34,11 @@ class Creature():
         pygame.draw.circle(screen, colour,
         (self.x, self.y), self.size - 5, 0)
 
-
     def bounce(self, width, height):
+        '''
+        Bounce creature off the wall and reflect its angle in the boundary
+        given width and height of screen
+        '''
         if self.x > (width - self.size):
             self.x = 2 * (width - self.size) - self.x
             self.angle = - self.angle
@@ -43,7 +46,7 @@ class Creature():
             self.x = 2 * self.size - self.x
             self.angle = - self.angle
 
-        if self.y > height - self.size:
+        if self.y > (height - self.size):
             self.y = 2 * (height - self.size) - self.y
             self.angle = math.pi - self.angle
         elif self.y < self.size:
@@ -56,3 +59,24 @@ class Creature():
 
     def turn(self, r):
         self.angle += r
+
+
+    def collide(self, loc):
+        '''
+        Check if the particle collides with any other particles in the given
+        list of creatures
+
+        Return: list of collided creature indexes
+        '''
+        collision_indexes = []
+        for i2, c2 in enumerate(loc):
+            dx = self.x - c2.x
+            dy = self.y - c2.y
+
+            distance = math.hypot(dx, dy) # distance between two creatures
+            combined_radius = self.size + c2.size
+
+            if distance < combined_radius:
+                collision_indexes.append(i2) # add collided creature's index to list
+
+        return collision_indexes
