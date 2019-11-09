@@ -1,6 +1,7 @@
 import neat
 import board
 import os
+import pygame
 
 def run(config_file):
     # read config from species_config.txt
@@ -16,13 +17,31 @@ def run(config_file):
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
 
+    # setup pygame
+    WIDTH = 1000
+    HEIGHT = 1000
+    BACKGROUND_COLOR = (255,255,255) # white
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption('NATURAL SELECTION SIMULATION')
+    screen.fill(BACKGROUND_COLOR)
+
     # Run for up to 50 generations.
-    b = board.Board(500, 500)
+    b = board.Board(WIDTH, HEIGHT, screen)
+
     top = p.run(b.sim_one_gen, 50)
 
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))
 
+    pygame.display.flip()
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+    pygame.quit()
 
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)

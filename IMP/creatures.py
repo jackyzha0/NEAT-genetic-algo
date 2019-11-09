@@ -16,7 +16,7 @@ class Creature():
         self.angle = 0  # [-pi, pi]
         self.velocity = 0
         self.dead = False
-        self.SIZE_ENERGY_RATIO = 0.1  # energy penalty for movement based on size
+        self.SIZE_ENERGY_RATIO = 1  # energy penalty for movement based on size
 
     def tick(self):
         '''
@@ -37,12 +37,8 @@ class Creature():
         '''
         Blit self onto PyGame surface
         '''
-
-        # outline
-        pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size, 2)
-        
-        # solid
-        pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size - 5, 0)
+        print(self.x, self.y, self.energy)
+        pygame.draw.circle(screen, self.colour, (int(self.x), int(self.y)), int(self.size), 0)
 
     def bounce(self, width, height):
         '''

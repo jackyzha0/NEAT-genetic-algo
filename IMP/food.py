@@ -18,5 +18,4 @@ class Food():
         '''
         Blit self onto PyGame surface
         '''
-        pygame.draw.circle(screen, self.colour,
-        (self.x, self.y), self.size, 0)
+        pygame.draw.circle(screen, self.colour, (int(self.x), int(self.y)), int(self.size), 0)

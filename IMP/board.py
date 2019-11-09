@@ -3,10 +3,11 @@ import creatures
 import food
 import random
 import math
+import pygame
 import neat
 
 class Board():
-    def __init__(self, w, h, foodspawn = 0.1):
+    def __init__(self, w, h, screen, foodspawn = 0.01):
         self.width = w  # dimensions of board
         self.height = h
         self.foodspawnthresh = 1 - foodspawn
@@ -15,23 +16,27 @@ class Board():
         self.creatures = []  # initialized later
         self.GEN_TIMEOUT = 1800  # Constant for generation timeout
         self.FOOD_GEN_DELTA = 5  # Constant for food generation position change
+        self.MAX_FOOD = 20
+        self.screen = screen
 
     def board_tick(self):
         '''
         Updates board every tick by spawning new food and checking for collisions.
         '''
-        for f in self.food:
-            # spawn if random exceeds threshold
-            if random.random() > self.foodspawnthresh:
+        # check food amount
+        if len(self.food) < self.MAX_FOOD:
+            for f in self.food:
+                # spawn if random exceeds threshold
+                if random.random() > self.foodspawnthresh:
 
-                # new x,y position with +/- FOOD_GEN_DELTA constant from current food position
-                nx = f.x + random.randint(-self.FOOD_GEN_DELTA, self.FOOD_GEN_DELTA)
-                ny = f.y + random.randint(-self.FOOD_GEN_DELTA, self.FOOD_GEN_DELTA)
-                x, y = nx, ny
+                    # new x,y position with +/- FOOD_GEN_DELTA constant from current food position
+                    nx = f.x + random.randint(-self.FOOD_GEN_DELTA, self.FOOD_GEN_DELTA)
+                    ny = f.y + random.randint(-self.FOOD_GEN_DELTA, self.FOOD_GEN_DELTA)
+                    x, y = nx, ny
 
-                # if in range, add new food to foodlist
-                if x > 0 and x < self.width and y > 0 and y < self.height:
-                    self.food.append(food.Food(x, y, size=random.random() * 3))  # random size
+                    # if in range, add new food to foodlist
+                    if x > 0 and x < self.width and y > 0 and y < self.height:
+                        self.food.append(food.Food(x, y, size=random.random() * 3))  # random size
 
         for i, c in enumerate(self.creatures):
             for i2 in c.collide(self.creatures[i+1:]):
@@ -39,11 +44,17 @@ class Board():
 
                 if c.size > c2.size:          # check which creature is bigger
                     self.creatures.pop(i2)    # kill the smaller one
+                    print('pop')
                     c.energy += c2.size       # increase the bigger one's energy by the smaller one's size
                 else:
                     self.creatures.pop(i)
+                    print('pop 2')
                     c2.energy += c.size
 
+        if self.ticks_total % 30 == 0:
+            self.render()
+
+        self.ticks_total += 1
 
     def closest(self, x: int, y: int, size: int) -> [int, float, int, float]:
         '''
@@ -100,7 +111,7 @@ class Board():
             genome.fitness = 0  # start with fitness level of 0
             net = neat.nn.FeedForwardNetwork.create(genome, config)  # from python-neat
             nets.append(net)
-            c = creatures.Creature(x=random.randint(0, self.width), y=random.randint(0,  self.height), size=random.randint(1, 10))  # create creature
+            c = creatures.Creature(x=random.randint(0, self.width), y=random.randint(0,  self.height), size=random.randint(5, 10))  # create creature
             self.creatures.append(c)
             g_l.append(genome) # append genome to genome list
 
@@ -110,10 +121,14 @@ class Board():
             for i, creature in enumerate(self.creatures):  # update all creatures
                 g_l[i].fitness += 1  # increment fitness by 1 for every tick that its alive
                 creature.tick()  # tick creature
+                creature.bounce(self.width, self.height)
 
                 if creature.dead:
-                    # !!! pop g_l, nets, creatures
-                    pass
+                    c_i = self.creatures.index(creature)  # index of current creatures
+                    g_l.pop(c_i)
+                    self.creatures.pop(c_i)
+                    nets.pop(c_i)
+                    print("just killed {id}, number surviving {l}".format(id=c_i, l = len(self.creatures)))
                 else:
                     closest = self.closest(creature.x, creature.y, creature.size)
 
@@ -126,15 +141,15 @@ class Board():
                     # modify creature direction based on nn output
                     creature.turn(net_out[1] * math.pi)
 
-    def render(self, screen):
+    def render(self):
         '''
         Small function to blit all creatures and food onto
         PyGame Display
         '''
         for creature in self.creatures:
-            creature.render(screen)
+            creature.render(self.screen)
         for food in self.food:
-            food.render(screen)
+            food.render(self.screen)
 
 def find_r_theta(x1: int, y1: int, x2: int, y2: int) -> (float, float):
     '''
