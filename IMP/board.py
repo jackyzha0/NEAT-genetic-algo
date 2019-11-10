@@ -18,9 +18,11 @@ class Board():
         self.GEN_TIMEOUT = 12000  # Constant for generation timeout
         self.FOOD_GEN_DELTA = 5  # Constant for food generation position change
         self.MAX_FOOD = 500
+        self.FOOD_SCALING = 5  # Constant to multiply food value by
+        self.RENDER_SKIP = 2  # render a frame every n frames
 
         pygame.init()
-        self.BACKGROUND_COLOR = (220,220,220) # white
+        self.BACKGROUND_COLOR = (220,220,220)
         pygame.display.set_caption('NATURAL SELECTION SIMULATION')
         self.screen = pygame.display.set_mode((w, h))
         self.screen.fill(self.BACKGROUND_COLOR)
@@ -48,7 +50,7 @@ class Board():
             for col_creat in c.collide(self.creatures[i+1:]):
                 if c.size > col_creat.size:          # check which creature is bigger
                     self.creatures.remove(col_creat)    # kill the smaller one
-                    c.energy += col_creat.size * 5       # increase the bigger one's energy by the smaller one's size
+                    c.energy += col_creat.size * self.FOOD_SCALING       # increase the bigger one's energy by the smaller one's size
                 else:
                     self.creatures.pop(i)
                     col_creat.energy += c.size
@@ -56,9 +58,9 @@ class Board():
                 if c.size > f.size:          # check if can eat
                     self.food.remove(f)
                     c.energy += f.size
-                    self.g_l[i].fitness += f.size * 5
+                    self.g_l[i].fitness += f.size * self.FOOD_SCALING
 
-        if self.ticks_total % 2 == 0:
+        if self.ticks_total % self.RENDER_SKIP == 0:
             self.render()
 
         self.ticks_total += 1
