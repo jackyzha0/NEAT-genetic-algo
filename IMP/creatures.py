@@ -16,14 +16,14 @@ class Creature():
         self.angle = 0  # [-pi, pi]
         self.velocity = 0
         self.dead = False
-        self.SIZE_ENERGY_RATIO = 0.1  # energy penalty for movement based on size
+        self.SIZE_ENERGY_RATIO = 0.2  # energy penalty for movement based on size
 
     def tick(self):
         '''
         Update self properties
         '''
         # consume energy, check if dead
-        self.energy -= abs(self.velocity) + (self.SIZE_ENERGY_RATIO * self.size)
+        self.energy -= abs(self.velocity)//3 + (self.SIZE_ENERGY_RATIO * self.size)
         if self.energy <= 0:
             self.dead = True
 
@@ -77,13 +77,13 @@ class Creature():
 
     def collide(self, loc):
         '''
-        Check if the particle collides with any other particles in the given
+        Check if the particle collides with any other creature in the given
         list of creatures
 
-        Return: list of collided creature indexes
+        Return: list of collided creatures
         '''
-        collision_indexes = []
-        for i2, c2 in enumerate(loc):
+        collisions = []
+        for c2 in loc:
             dx = self.x - c2.x
             dy = self.y - c2.y
 
@@ -91,6 +91,6 @@ class Creature():
             combined_radius = self.size + c2.size
 
             if distance < combined_radius:
-                collision_indexes.append(i2) # add collided creature's index to list
+                collisions.append(c2) # add collided creature's index to list
 
-        return collision_indexes
+        return collisions

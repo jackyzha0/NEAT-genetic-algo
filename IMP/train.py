@@ -24,7 +24,7 @@ def run(config_file):
     # Run for up to 50 generations.
     b = board.Board(WIDTH, HEIGHT)
 
-    top = p.run(b.sim_one_gen, 150)
+    top = p.run(b.sim_one_gen, 1500)
 
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))
