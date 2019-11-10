@@ -5,9 +5,10 @@ import random
 import math
 import pygame
 import neat
+import sys
 
 class Board():
-    def __init__(self, w, h, screen, foodspawn = 0.1):
+    def __init__(self, w, h, foodspawn = 0.1):
         self.width = w  # dimensions of board
         self.height = h
         self.foodspawnthresh = 1 - foodspawn
@@ -17,7 +18,12 @@ class Board():
         self.GEN_TIMEOUT = 3600  # Constant for generation timeout
         self.FOOD_GEN_DELTA = 5  # Constant for food generation position change
         self.MAX_FOOD = 250
-        self.screen = screen
+
+        pygame.init()
+        self.BACKGROUND_COLOR = (220,220,220) # white
+        pygame.display.set_caption('NATURAL SELECTION SIMULATION')
+        self.screen = pygame.display.set_mode((w, h))
+        self.screen.fill(self.BACKGROUND_COLOR)
 
     def board_tick(self):
         '''
@@ -49,7 +55,7 @@ class Board():
                     self.creatures.pop(i)
                     c2.energy += c.size
 
-        # if self.ticks_total % 30 == 0:
+        if self.ticks_total % 10 == 0:
             self.render()
 
         self.ticks_total += 1
@@ -65,7 +71,7 @@ class Board():
         predator_min_r = math.inf
         predator_min_theta = 0
 
-        for c in self.food and self.creatures:  # iterate through all creatures and food
+        for c in self.food, self.creatures:  # iterate through all creatures and food
             r, theta = find_r_theta(x, y, c.x, c.y)  # calculate distance and angle to object
             if c.size > size: # check predator
                 if r < predator_min_r:
@@ -114,7 +120,7 @@ class Board():
             g_l.append(genome) # append genome to genome list
 
         # simulate!
-        while self.creatures and self.ticks_total < self.GEN_TIMEOUT:
+        while self.creatures and (self.ticks_total < self.GEN_TIMEOUT):
             self.board_tick()  # update board
             for i, creature in enumerate(self.creatures):  # update all creatures
                 g_l[i].fitness += 1  # increment fitness by 1 for every tick that its alive
@@ -144,11 +150,18 @@ class Board():
         Small function to blit all creatures and food onto
         PyGame Display
         '''
-        pass
-        # for creature in self.creatures:
-        #     creature.render(self.screen)
-        # for food in self.food:
-        #     food.render(self.screen)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+        self.screen.fill(self.BACKGROUND_COLOR)
+
+        for creature in self.creatures:
+            creature.render(self.screen)
+        for food in self.food:
+            food.render(self.screen)
+
+        pygame.display.flip()
 
 def find_r_theta(x1: int, y1: int, x2: int, y2: int) -> (float, float):
     '''

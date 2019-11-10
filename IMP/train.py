@@ -20,28 +20,14 @@ def run(config_file):
     # setup pygame
     WIDTH = 500
     HEIGHT = 500
-    BACKGROUND_COLOR = (220,220,220) # white
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption('NATURAL SELECTION SIMULATION')
-    screen.fill(BACKGROUND_COLOR)
 
     # Run for up to 50 generations.
-    b = board.Board(WIDTH, HEIGHT, screen)
+    b = board.Board(WIDTH, HEIGHT)
 
     top = p.run(b.sim_one_gen, 150)
 
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))
-
-    pygame.display.flip()
-
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-    pygame.quit()
 
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
