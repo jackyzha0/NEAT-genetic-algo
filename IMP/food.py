@@ -10,7 +10,7 @@ class Food():
         '''
         self.x = x
         self.y = y
-        self.colour = (255, 0, 102)
+        self.colour = (255, 0, 0)
         self.size = size  # determines what kind of creatures can eat it
                           # and how much energy it gives
 
@@ -18,5 +18,4 @@ class Food():
         '''
         Blit self onto PyGame surface
         '''
-        pygame.draw.circle(screen, self.colour,
-        (self.x, self.y), self.size, 0)
+        pygame.draw.circle(screen, self.colour, (int(self.x), int(self.y)), int(self.size), 0)
