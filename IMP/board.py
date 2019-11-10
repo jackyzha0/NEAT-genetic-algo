@@ -71,7 +71,8 @@ class Board():
         predator_min_r = math.inf
         predator_min_theta = 0
 
-        for c in self.food, self.creatures:  # iterate through all creatures and food
+        for c in self.food:  # iterate through all creatures and food
+        # !!! fix closest creature
             r, theta = find_r_theta(x, y, c.x, c.y)  # calculate distance and angle to object
             if c.size > size: # check predator
                 if r < predator_min_r:
