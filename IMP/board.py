@@ -172,6 +172,6 @@ def find_r_theta(x1: int, y1: int, x2: int, y2: int, normfact: int) -> (float, f
     two points (x1,y2) and (x2,y2)
     Theta is calculated relative to the top (0 radians) and the bottom (-pi/pi)
     '''
-    theta = math.atan((x2 - x1) / (y2 - y1 + 1e-8))  # add small epsilon to prevent divide by zero
+    theta = math.atan2((x2 - x1), (y2 - y1 + 1e-8))  # add small epsilon to prevent divide by zero
     r = math.hypot((x2-x1), (y2-y1)) / normfact
     return r, theta
