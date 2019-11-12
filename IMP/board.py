@@ -6,6 +6,7 @@ import math
 import pygame
 import neat
 import sys
+import time
 
 class Board():
     def __init__(self, w, h, foodspawn = 0.1):
@@ -17,9 +18,11 @@ class Board():
         self.creatures = []  # initialized later
         self.GEN_TIMEOUT = 12000  # Constant for generation timeout
         self.FOOD_GEN_DELTA = 5  # Constant for food generation position change
-        self.MAX_FOOD = 500
-        self.FOOD_SCALING = 5  # Constant to multiply food value by
-        self.RENDER_SKIP = 2  # render a frame every n frames
+        self.MAX_FOOD = 15
+        self.FOOD_SCALING = 150  # Constant to multiply food value by
+        self.RENDER_SKIP = 1  # render a frame every n frames
+        self.DEBUG = True
+        self.DEBUG_SLEEP_TIME = 0
 
         pygame.init()
         self.BACKGROUND_COLOR = (220,220,220)
@@ -44,7 +47,7 @@ class Board():
 
                     # if in range, add new food to foodlist
                     if x > 0 and x < self.width and y > 0 and y < self.height:
-                        self.food.append(food.Food(x, y, size=random.randint(2, 5)))  # random size
+                        self.food.append(food.Food(x, y, size=random.randint(3, 5)))  # random size
 
         for i, c in enumerate(self.creatures):
             for col_creat in c.collide(self.creatures[i+1:]):
@@ -62,6 +65,8 @@ class Board():
 
         if self.ticks_total % self.RENDER_SKIP == 0:
             self.render()
+            if self.DEBUG:
+                time.sleep(self.DEBUG_SLEEP_TIME)
 
         self.ticks_total += 1
 
@@ -71,9 +76,9 @@ class Board():
         Predator is any food/creature that is of strictly greater size
         Prey is any food/creature that is strictly smaller
         '''
-        prey_min_r = math.inf  # closest distance doesnt exist, assume infinity
+        prey_min_r = self.height * math.sqrt(2) # closest distance doesnt exist, assume infinity
         prey_min_theta = 0  # angle shouldnt matter when dist is infinity
-        predator_min_r = math.inf
+        predator_min_r = self.height * math.sqrt(2)
         predator_min_theta = 0
 
         for c in self.food + self.creatures:  # iterate through all creatures and food
@@ -87,7 +92,25 @@ class Board():
                     prey_min_r = r
                     prey_min_theta = theta
 
-        return [prey_min_r, prey_min_theta, predator_min_r, predator_min_theta]
+        if self.DEBUG:
+            if predator_min_r != self.height * math.sqrt(2):
+                x1 = int(math.sin(predator_min_theta) * predator_min_r * self.height) + int(x)
+                y1 = int(math.cos(predator_min_theta) * predator_min_r * self.height) + int(y)
+                pygame.draw.line(self.screen, (255, 0, 0), (int(x), int(y)), (x1, y1), 1)
+            if prey_min_r != self.height * math.sqrt(2):
+                x2 = int(math.sin(prey_min_theta) * prey_min_r * self.height) + int(x)
+                y2 = int(math.cos(prey_min_theta) * prey_min_r * self.height) + int(y)
+                pygame.draw.line(self.screen, (0, 0, 255), (int(x), int(y)), (x2, y2), 1)
+        pygame.display.flip()
+
+        return self.scale(prey_min_r, prey_min_theta, predator_min_r, predator_min_theta)
+
+    def scale(self, rr, rt, pr, pt):
+        x0 = rr / (self.height * math.sqrt(2))
+        x1 = rt / (math.pi)
+        x2 = pr / (self.height * math.sqrt(2))
+        x3 = pt / (math.pi)
+        return [x0, x1, x2, x3]
 
     def sim_one_gen(self, genomes: [(int, neat.genome.DefaultGenome)], config: neat.config.Config):
         '''
@@ -107,7 +130,7 @@ class Board():
         for _ in range(self.MAX_FOOD):
             x = random.randint(0, self.width)
             y = random.randint(0, self.height)
-            size = random.random()*3
+            size = random.randint(3, 5)
             f = food.Food(x, y, size)
             self.food.append(f)
 
@@ -131,22 +154,25 @@ class Board():
                 creature.tick()  # tick creature
                 creature.bounce(self.width, self.height)
 
+                c_i = self.creatures.index(creature)  # index of current
+
                 if creature.dead:
-                    c_i = self.creatures.index(creature)  # index of current creatures
                     self.g_l.pop(c_i)
                     self.creatures.pop(c_i)
                     nets.pop(c_i)
                 else:
                     closest = self.closest(creature.x, creature.y, creature.size)
 
-                    # get neural network output given input of closest
-                    net_out = nets[self.creatures.index(creature)].activate(closest)
+                    input = closest + [creature.angle, creature.velocity]
+
+                    # get neural network output given input
+                    net_out = nets[c_i].activate(input)
 
                     # modify creature accel based on nn output
                     creature.accel(net_out[0])
 
                     # modify creature direction based on nn output
-                    creature.turn(net_out[1] * math.pi)
+                    creature.turn(net_out[1])
 
     def render(self):
         '''
@@ -160,7 +186,7 @@ class Board():
         self.screen.fill(self.BACKGROUND_COLOR)
 
         for creature in self.creatures:
-            creature.render(self.screen)
+            creature.render(self.screen, debug=self.DEBUG)
         for food in self.food:
             food.render(self.screen)
 
