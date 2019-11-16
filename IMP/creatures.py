@@ -29,7 +29,8 @@ class Creature():
         self.energy -= abs(self.velocity) + \
             (self.SIZE_ENERGY_RATIO * self.size)
         if self.energy <= 0:
-            self.dead = True
+            # self.dead = True
+            self.energy = 0
 
         # update x,y based on vel and angle
         dx = math.sin(self.angle) * self.velocity

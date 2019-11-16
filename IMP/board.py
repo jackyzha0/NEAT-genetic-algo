@@ -17,10 +17,10 @@ class Board():
         self.generation = 0  # current generation
         self.food = []  # initialized later
         self.creatures = []  # initialized later
-        self.GEN_TIMEOUT = 12000  # Constant for generation timeout
+        self.GEN_TIMEOUT = 300  # Constant for generation timeout
         self.FOOD_GEN_DELTA = 5  # Constant for food generation position change
         self.MAX_FOOD = 35
-        self.FOOD_SCALING = 150  # Constant to multiply food value by
+        self.FOOD_SCALING = 50  # Constant to multiply food value by
         self.RENDER_SKIP = 1  # render a frame every n frames
         self.DEBUG = True
         self.DEBUG_SLEEP_TIME = 0
@@ -59,7 +59,7 @@ class Board():
             for f in c.collide(self.food):
                 if c.size > f.size:          # check if can eat
                     self.food.remove(f)
-                    c.energy += f.size
+                    c.energy += f.size * self.FOOD_SCALING
                     self.g_l[i].fitness += f.size * self.FOOD_SCALING
 
         if self.ticks_total % self.RENDER_SKIP == 0:
@@ -158,7 +158,8 @@ class Board():
                     r, theta = self.closest(
                         creature.x, creature.y, creature.size)
 
-                    input = [r, creature.angle - theta, creature.velocity / 5]
+                    input = [r, theta, creature.angle,
+                             creature.velocity / 5]
 
                     # get neural network output given input
                     net_out = nets[c_i].activate(input)
