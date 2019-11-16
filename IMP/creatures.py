@@ -15,10 +15,10 @@ class Creature():
         self.colour = (random.randrange(
             254), random.randrange(254), random.randrange(254))
         self.energy = 500.  # starting energy, dies if energy = 0
-        self.angle = 0  # [-pi, pi]
+        self.angle = (random.random() * 2 * math.pi) - math.pi  # [-pi, pi]
         self.velocity = 0
         self.dead = False
-        self.SIZE_ENERGY_RATIO = 0.2  # energy penalty for movement based on size
+        self.SIZE_ENERGY_RATIO = 0.125  # energy penalty for movement based on size
         self.VEL_MAX = 5
 
     def tick(self):
@@ -29,7 +29,7 @@ class Creature():
         self.energy -= abs(self.velocity) + \
             (self.SIZE_ENERGY_RATIO * self.size)
         if self.energy <= 0:
-            # self.dead = True
+            self.dead = True
             self.energy = 0
 
         # update x,y based on vel and angle

@@ -17,8 +17,8 @@ class Board():
         self.generation = 0  # current generation
         self.food = []  # initialized later
         self.creatures = []  # initialized later
-        self.GEN_TIMEOUT = 300  # Constant for generation timeout
-        self.FOOD_GEN_DELTA = 5  # Constant for food generation position change
+        self.GEN_TIMEOUT = 500  # Constant for generation timeout
+        self.FOOD_GEN_DELTA = 50  # Constant for food generation position change
         self.MAX_FOOD = 35
         self.FOOD_SCALING = 50  # Constant to multiply food value by
         self.RENDER_SKIP = 1  # render a frame every n frames
@@ -137,7 +137,7 @@ class Board():
                 genome, config)  # from python-neat
             nets.append(net)
             c = creatures.Creature(x=random.randint(0, self.width), y=random.randint(
-                0,  self.height), size=8)  # create creature
+                0, self.height), size=8)  # create creature
             self.creatures.append(c)
             self.g_l.append(genome)  # append genome to genome list
 
