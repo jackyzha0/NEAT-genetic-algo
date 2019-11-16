@@ -101,7 +101,7 @@ class Board():
                 x2 = int(math.sin(prey_min_theta) * prey_min_r * self.height) + int(x)
                 y2 = int(math.cos(prey_min_theta) * prey_min_r * self.height) + int(y)
                 pygame.draw.line(self.screen, (0, 0, 255), (int(x), int(y)), (x2, y2), 1)
-        pygame.display.flip()
+            pygame.display.flip()
 
         return self.scale(prey_min_r, prey_min_theta, predator_min_r, predator_min_theta)
 

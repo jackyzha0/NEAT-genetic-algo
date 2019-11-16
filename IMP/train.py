@@ -2,7 +2,6 @@ import neat
 import board
 import os
 import pygame
-import matplotlib.pyplot as plt
 
 def run(config_file):
     # read config from species_config.txt
@@ -29,32 +28,8 @@ def run(config_file):
 
     top = p.run(b.sim_one_gen, NUMBER_0F_GEN)
 
-    # x axis values
-    gens = list(range(1, NUMBER_0F_GEN + 1))
-    # y axis values
-    avg_fitness = stats.get_fitness_mean()
-    best_fitness = stats.get_fitness_stat(customize_max)
-
-    plt.plot(gens, avg_fitness)
-    plt.plot(gens, best_fitness)
-
-    plt.xlabel('Generations')
-
-    # giving a title to my graph
-    plt.title('Generations vs. Fitness Score')
-
-    # function to show the plot
-    plt.show()
-
-
-
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))
-
-
-def customize_max(values):
-    values = list(values)
-    return max(values)
 
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
