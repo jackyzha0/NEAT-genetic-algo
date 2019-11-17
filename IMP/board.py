@@ -146,7 +146,6 @@ class Board():
             self.board_tick()  # update board
             for i, creature in enumerate(self.creatures):  # update all creatures
                 creature.tick()  # tick creature
-                creature.bounce(self.width, self.height, bounce=False)
 
                 c_i = self.creatures.index(creature)  # index of current
 

@@ -52,37 +52,6 @@ class Creature():
         pygame.draw.line(screen, (0, min((self.energy/500), 1)
                                   * 255, 0), (int(self.x), int(self.y)), (x2, y2), 2)
 
-    def bounce(self, width, height, bounce=False):
-        '''
-        Bounce creature off the wall and reflect its angle in the boundary
-        given width and height of screen
-        '''
-        if bounce:
-            if self.x > (width - self.size):
-                self.x = 2 * (width - self.size) - self.x
-                self.angle = - self.angle
-            elif self.x < self.size:
-                self.x = 2 * self.size - self.x
-                self.angle = - self.angle
-
-            if self.y > (height - self.size):
-                self.y = 2 * (height - self.size) - self.y
-                self.angle = math.pi - self.angle
-            elif self.y < self.size:
-                self.y = 2 * self.size - self.y
-                self.angle = math.pi - self.angle
-        else:
-            pass
-            # if self.x > (width - self.size):
-            #     self.dead = True
-            # elif self.x < self.size:
-            #     self.dead = True
-            #
-            # if self.y > (height - self.size):
-            #     self.dead = True
-            # elif self.y < self.size:
-            #     self.dead = True
-
     def accel(self, a: float):
         '''
         Change velocity by a.
