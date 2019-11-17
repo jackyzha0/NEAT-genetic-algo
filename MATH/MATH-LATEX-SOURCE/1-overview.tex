@@ -1,39 +1,4 @@
-\newpage
-\subsection{\underline{Overview}}
 
-\begin{itemize}
-\item Initial setup, and random selection:
-\begin{itemize}
-\item Population: a set of individuals, which we can determine the size of
-\item Individual: has a unique genome, which is represented as a string with elements from a genetic alphabet $A=\{0,1\}$
-\item Each number or section of numbers encodes a particular trait
-\end{itemize}
-\item Fitness function:
-\begin{itemize}
-\item Fitness values could be replaced by ranks.
-\item E.g. if there are 32 animals in a population, each animal gets a ranking from numbers 1 to 32 based on what we deem as the most fit characteristics
-\end{itemize}
-\item Crossover:
-\begin{itemize}
-    \item Choose a pair of individuals who will reproduce
-    \item Choose a position from 1 to $L - 1$ randomly
-    \item Cut both genomes at this point and reattach the parts of each parent
-    \item Move new pairs to population
-\end{itemize}
-\item Mutation:
-\bi
-    \item Choose a small probability
-    \item For all individuals and each position in their respective genes,
-    1 to $L$, roll the small probability
-    \item If probability met, flip the gene
-\ei
-\item Termination condition:
-\bi 
-    \item After repeating the above process we need to know when to stop
-    \item Find optimal solution (fitness sufficiently close to optimal)
-    \item Fixed number of generations reached or time/memory limit exceeded
-    (safety conditions)
-    \item Diversity of the population has vanished
-    \item Plateau of the highest ranking solution
-\ei
-\end{itemize}
+\tableofcontents
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+\pagenumbering{gobble}

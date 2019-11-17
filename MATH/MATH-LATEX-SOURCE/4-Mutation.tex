@@ -1,7 +1,8 @@
 \newpage
-\subsection{\underline{Mutation}}
+\section{\underline{Mutation}}
 
-Building off of the overview, we will be choosing a small probability of 
+\subsection{Methodology}
+We will be choosing a small probability of 
 mutation.
 \bi
 \item This probability is usually less than 0.01, so we will choose
@@ -9,11 +10,13 @@ $p_m = 0.005$.
 \item Now, for each gene (bit) in an individual, we flip it with this probability. 
 \item Then this process is repeated for all offspring until a sufficiently diverse new population is produced and ready to repeat the process once again.
 \item Mutations are extremely important for the process of natural selection despite their low chances of occurring. Both selection and mutation contribute to continual improvement in the next generation.
-\item One of the differences between our implementation and how mutation 
+\ei
+
+\subsection{Connection to Biology}
+One of the differences between our implementation and how mutation 
 occurs in nature is that while both change DNA at a particular place, their
 purposes are different. In nature, mutation is a weak force for changing 
 allele frequencies but key for evolution because of being a strong force
 for introducing new alleles. In our implementation however, mutation is not
 used to introduce new alleles, rather it is used to change allele frequencies
 more in the fashion of genetic drift to create diversity.
-\ei

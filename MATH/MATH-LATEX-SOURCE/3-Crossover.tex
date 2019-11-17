@@ -1,7 +1,9 @@
 \newpage
-\subsection{\underline{Crossover}}
+\section{\underline{Crossover}}
+
+\subsection{Theory}
 \begin{enumerate}
-\item We will first choose a pair of individuals which were selected to reproduce. An individual produces offspring with a probability of $\frac{f_i}{n\bar{f}}$. In other words, an individual with a higher biological fitness has a greater probability of reproducing. After, individuals that are selected to reproduce are ordered by descending individual fitness. Starting from the top of the list, pairs of two are chosen to "crossover", merging genes to create an offspring. 
+\item We will first choose a pair of individuals which were selected to reproduce. After, individuals that are selected to reproduce are ordered by descending individual fitness. Starting from the top of the list, pairs of two are chosen to "crossover", merging genes to create an offspring. 
 \item Combine each pair's genome into one
 \bi
 \item Using randomized selection, choose a number $c$ in range $[1,L-1]$ where $L$ is the character length of the genome string of the species.
@@ -11,7 +13,10 @@
 \item $O$
 \ei
 \item Repeat $2.$ for each pair of individuals selected to reproduce in the population. After this process is complete, a new set of $500$ offspring should be created, representing the next generation of the species. 
-\item Note that in nature, the basic idea of chromosomal crossover works 
+\end{enumerate}
+
+\subsection{Connection to Biology}
+Note that in nature, the basic idea of chromosomal crossover works 
 the same as our implementation in that two homologous instances of the same
 chromosome break then reconnect at a different end piece. However, one 
 difference lies in the way that they break. In nature, the break can happen
@@ -19,4 +24,3 @@ at different places (unequal crossover) but is more likely to break in the
 same place (normal crossover). This contrasts our model, as it is possible
 to have crossover at any place in the genome with an equal probability
 and each genome of the parent is crossed over rather than individual genes.
-\end{enumerate}
