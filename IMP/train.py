@@ -4,11 +4,12 @@ import os
 import pygame
 import matplotlib.pyplot as plt
 
+
 def run(config_file):
     # read config from species_config.txt
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                         config_file)
+                                neat.DefaultSpeciesSet, neat.DefaultStagnation,
+                                config_file)
 
     # initialize population
     p = neat.Population(config)
@@ -46,8 +47,6 @@ def run(config_file):
     # function to show the plot
     plt.show()
 
-
-
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))
 
@@ -55,6 +54,7 @@ def run(config_file):
 def customize_max(values):
     values = list(values)
     return max(values)
+
 
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
