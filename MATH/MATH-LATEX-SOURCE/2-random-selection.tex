@@ -1,31 +1,14 @@
 \newpage
-\subsection{\underline{Random Selection}}
-\begin{itemize}
-\item Each individual has a corresponding genome
-\bi
-\item This genome is represented as a string $s\in A$, where $A$ are the possible characters in a genome
-\bi
-\item In a real genome, the letters $A, C, G$, and $T$ (or $U$) are used to represent the real nucleotide bases Adenine, Cytosine, Guanine, and Thymine (or Uracil, present in RNA). So in this case, $A=\{A, C, G, T, U\}$
-\item However, our implementation of a genome will be using binary digits to encode genetic information. So in our model, $A=\{0,1\}$
-\ei
-\item So we can let the set of all individual fitnesses be $F_g=\{f_1, f_2, \ldots, f_p\}$, where $g$ is a given generation.
-\item As we are looking at a population of $500$ creatures, we have $p=500$. This number will be held constant across all generations.
-\item However, this fixed population value can be picked to be any other value. So let us initialize a variable $p$ to represent the total number of individuals in the population of creatures. 
-\ei
-\item Offspring:
-\bi
-\item An individual produces offspring with a probability of $\frac{f_i}{n\bar{f}}$
-\item I.e. An individual is only allowed to reproduce if its fitness value is greater than the mean fitness value
-\item After, individuals that are selected to reproduce are ordered by descending individual fitness.
-\item Starting from the top of the list, pairs of two are 
-\bi
-\item This process mimics sexual selection
-\ei
-\item If there are an odd number of individuals chosen to reproduce, a random individual will be removed from the mating pool, simulating natural conditions
-\item Number of offspring is equal
-\ei
-\item Survival:
-\bi
-\item At the end of a generation, all individuals from one generation are killed off - only offspring survive into the next generation.
-\ei
-\end{itemize}
+\subsection{\underline{Initial Setup and Random Selection}}
+
+\bigbreak
+\nid \underline{Each individual has a corresponding genome}
+
+\bigbreak
+This genome is represented as a string $s\in A$, where $A$ are the possible characters in a genome. In a real genome, the letters $A, C, G$, and $T$ (or $U$) are used to represent the real nucleotide bases adenine, cytosine, guanine, and thymine (or uracil, present in RNA). So in this case, $A=\{A, C, G, T, U\}$. However, our implementation of a genome will be using binary digits to encode genetic information. Starting with a list of traits (e.g. ...) in an array of float values, we will append the binary conversions of all indices in this array. Some of the genetic information we will be encoding into the binary string are we  So in our model, $A=\{0,1\}$. So we can let the set of all individual fitnesses be $F_g=\{f_1, f_2, \ldots, f_p\}$, where $g$ is a given generation. As we are looking at a population of $500$ creatures, we have $p=500$. This number will be held constant across all generations. However, this fixed population value can be picked to be any other value. So let us initialize a variable $p$ to represent the total number of individuals in the population of creatures. 
+
+\bigbreak
+\nid \underline{Population initialization:}
+
+\bigbreak
+All individuals are initialized with an individual fitness value of $0$. Each bit in each individuals' genome is identical to each others, from $A$. Over time, generational performance in the simulation and mutations in the bits of each individuals' genome will separate individuals' genomes from each other, and thus allow certain groups of individuals to succeed in the population. This simulates the process of microevolution, in which the genetics and allele frequencies of a population gradually shift over time, and with many repeated generations, eventually leads to macroevolution and speciation, as we see in the simulation.
