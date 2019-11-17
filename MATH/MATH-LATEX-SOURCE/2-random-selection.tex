@@ -1,14 +1,24 @@
 \newpage
-\subsection{\underline{Initial Setup and Random Selection}}
+\section{\underline{Initial Setup \& Selection}}
 
 \bigbreak
-\nid \underline{Each individual has a corresponding genome}
+\nid \subsection{Each individual has a corresponding genome}
 
 \bigbreak
-This genome is represented as a string $s\in A$, where $A$ are the possible characters in a genome. In a real genome, the letters $A, C, G$, and $T$ (or $U$) are used to represent the real nucleotide bases adenine, cytosine, guanine, and thymine (or uracil, present in RNA). So in this case, $A=\{A, C, G, T, U\}$. However, our implementation of a genome will be using binary digits to encode genetic information. Starting with a list of traits (e.g. ...) in an array of float values, we will append the binary conversions of all indices in this array. Some of the genetic information we will be encoding into the binary string are we  So in our model, $A=\{0,1\}$. So we can let the set of all individual fitnesses be $F_g=\{f_1, f_2, \ldots, f_p\}$, where $g$ is a given generation. As we are looking at a population of $500$ creatures, we have $p=500$. This number will be held constant across all generations. However, this fixed population value can be picked to be any other value. So let us initialize a variable $p$ to represent the total number of individuals in the population of creatures. 
+This genome is represented as a string $s\in A$, where $A$ are the possible characters in a genome. In a real genome, the letters $A, C, G$, and $T$ (or $U$) are used to represent the real nucleotide bases adenine, cytosine, guanine, and thymine (or uracil, present in RNA). So in this case, $A=\{A, C, G, T, U\}$. However, our implementation of a genome will be using binary digits to encode genetic information. Starting with a list of input traits (e.g. distance to nearest prey, angle to nearest prey, angle of individual movement, speed of individual movement) in an array of float values, we will append the binary conversions of all indices in this array. Some of the genetic information we will be encoding into the binary string are we  So in our model, $A=\{0,1\}$. So we can let the set of all individual fitnesses be $F_g=\{f_1, f_2, \ldots, f_p\}$, where $g$ is a given generation. As we are looking at a population of $500$ creatures, we have $p=500$. This number will be held constant across all generations. However, this fixed population value can be picked to be any other value. So let us initialize a variable $p$ to represent the total number of individuals in the population of creatures. 
 
 \bigbreak
-\nid \underline{Population initialization:}
+\nid \subsection{Population initialization:}
 
 \bigbreak
-All individuals are initialized with an individual fitness value of $0$. Each bit in each individuals' genome is identical to each others, from $A$. Over time, generational performance in the simulation and mutations in the bits of each individuals' genome will separate individuals' genomes from each other, and thus allow certain groups of individuals to succeed in the population. This simulates the process of microevolution, in which the genetics and allele frequencies of a population gradually shift over time, and with many repeated generations, eventually leads to macroevolution and speciation, as we see in the simulation.
+All individuals are initialized with an individual fitness value of $0$. Each bit in each individuals' genome is identical to each others, from $A$. Over time, generational performance in the simulation and mutations in the bits of each individuals' genome will separate individuals' genomes from each other, and thus allow certain groups of individuals to succeed in the population. This simulates the process of microevolution, in which the genetics and allele frequencies of a population gradually shift over time, and with many repeated generations, eventually leads to macroevolution and speciation, as we see in the simulation. \\
+
+\nid \subsection{Carnivores and herbivores:}
+\bigbreak
+In our simulation we will be looking at two cases. In one, we will allow 
+individuals of the species to consume others and see how this
+compares to when the individuals of the population are only allowed to 
+consume food. Inherently, both scenarios still invoke competition but
+predation will have a large negative impact on individuals who are easily
+consumed, so it will be interesting to see whether an evolutionary arms 
+race develops.

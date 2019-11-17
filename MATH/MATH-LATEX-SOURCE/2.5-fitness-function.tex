@@ -1,37 +1,39 @@
 \newpage
-\subsection{\underline{Fitness Function}}
+\section{\underline{Fitness Function}}
 
+\subsection{Underlying theory}
 In our simulation, we want to provide incentive for individuals who eat the greatest quantity of food. This mimics reality, as individuals who are able to consume greater quantities of food are able to survive longer, reproduce more, and thus have a greater biological fitness.
 
-\ms
-\nid At the end of one generation, we have a measure of performance from each individual. So let the fitness function be defined as the following, where $t$ is the time in seconds an individuals stays alive:
+\subsection{Fitness function}
+\nid At the end of one generation, we have a measure of performance from each individual. So let the fitness function be defined as the following, where $x$ is the quantity of food an individual eats:
 
-$$f_i(t)=t^2$$
-
-\ms
-\nid This function was chosen to disproportionately incentivizes genetics from individuals which had stayed alive longer. This means that over many generations, we should see a trend towards genetics from individuals who stayed alive the longest, i.e. genetics indicating high biological fitness. 
+$$f_i(x)=x^2$$
 
 \ms
+\nid This function was chosen to disproportionately incentivizes genetics from individuals which had eaten more food. This means that over many generations, we should see a trend towards genetics from individuals who eat the most food, i.e. genetics indicating high biological fitness. 
+
+\subsection{Individual fitness set}
 \nid After running this calculation for all $p$ individuals in a generation, we will have a set of all individual fitnesses:
 
 $$
 F_g=\{f_1, f_2, f_3, \ldots, f_{p}\}
 $$
 
+\subsection{Percentile contribution to gene pool}
 \nid To find the proportion of an individual's contribution to the gene pool of a population, we find the ratio of an individual's fitness divided by sum of all the individual fitness values of the population. So if $W_i$ is the weight of fitness each individual holds in the population's gene pool, then:
 
 $$
 W_i=\frac{f_i}{\mathlarger{\sum_{k=1}^{p} f_k}}
 $$
 
-\nid From here, we can determine how many offspring an individual will produce: 
-$\frac{f_i}{\bar{f}}$
-\bi
-\item A ratio we can use in later calculations, proportional to the fitness of an individual in relation to the mean individual fitness in the population.
-\ei
+\subsection{Offspring distribution
+}
+\nid In relation to this percentile contribution to gene pool of each individual, we can determine how many offspring each individual will produce: 
+\begin{equation*}
+p \cdot W_i
+\end{equation*}
 
-\ms
-\nid Additionally, we will create a function which takes in a fitness ranking of an individual, and outputs the number of offspring that an individual can have.
+\nid This scales individuals fitness weight to the total population, allowing for new populations to have a constant number of individuals ($p$ individuals). 
 
 
 

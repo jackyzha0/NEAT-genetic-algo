@@ -1,8 +1,8 @@
 \newpage
-\subsection{\underline{Termination Condition}}
+\section{\underline{Termination Condition}}
 
-\bi
-\item The most commonly used termination conditions used within genetic
+\subsection{Common termination conditions}
+The most commonly used termination conditions used within genetic
 algorithms are as follows:
 \bi
 \item After repeating the above process we need to know when to stop
@@ -12,15 +12,18 @@ algorithms are as follows:
 \item Diversity of the population has vanished
 \item Plateau of the highest ranking solution
 \ei
-\item For our implementation, we decided to use two termination conditions.
+
+\subsection{Our simulation's termination conditions}
+For our implementation, we decided to use two termination conditions.
 The first is if all the individuals die in which we must obviously move
 on to the next generation. Second, we will start the next generation if the 
 individuals survive for a certain amount of time.
-\item There are vast and fairly obvious differences in our simulation as
+
+\ms
+There are vast and fairly obvious differences in our simulation as
 compared to nature here. However this is a result of genetic algorithms 
 often having a purpose like to solve a problem, while in nature individuals
 try to optimize their adaptation to the environment.
-\ei
 
 \bi
 \item Note: At the end of a generation, all individuals from one generation are killed off - only offspring survive into the next generation.
