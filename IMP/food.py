@@ -3,6 +3,7 @@ import random
 
 import pygame
 
+
 class Food():
     def __init__(self, x, y, size):
         '''
@@ -12,10 +13,11 @@ class Food():
         self.y = y
         self.colour = (255, 0, 0)
         self.size = size  # determines what kind of creatures can eat it
-                          # and how much energy it gives
+        # and how much energy it gives
 
     def render(self, screen):
         '''
         Blit self onto PyGame surface
         '''
-        pygame.draw.circle(screen, self.colour, (int(self.x), int(self.y)), int(self.size), 0)
+        pygame.draw.circle(screen, self.colour, (int(
+            self.x), int(self.y)), int(self.size), 0)
