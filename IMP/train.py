@@ -3,6 +3,7 @@ import board
 import os
 import pygame
 import matplotlib.pyplot as plt
+import visualize
 
 
 def run(config_file):
@@ -18,6 +19,7 @@ def run(config_file):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
+    p.add_reporter(neat.Checkpointer(10))
 
     # setup pygame
     WIDTH = 500
@@ -49,6 +51,10 @@ def run(config_file):
 
     # show final stats
     print('\nBest genome:\n{!s}'.format(top))
+
+    visualize.draw_net(config, top, True, node_names=node_names)
+    visualize.plot_stats(stats, ylog=False, view=True)
+    visualize.plot_species(stats, view=True)
 
 
 def customize_max(values):
