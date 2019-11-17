@@ -22,7 +22,7 @@ class Board():
         self.MAX_FOOD = 35
         self.FOOD_SCALING = 50  # Constant to multiply food value by
         self.RENDER_SKIP = 1  # render a frame every n frames
-        self.DEBUG = True
+        self.DEBUG = False
         self.DEBUG_SLEEP_TIME = 0
 
         pygame.init()

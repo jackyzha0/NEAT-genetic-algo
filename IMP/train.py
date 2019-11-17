@@ -3,57 +3,43 @@ import board
 import os
 import pygame
 import matplotlib.pyplot as plt
+import visualize
 
 
-def run(config_file):
+def run(config_file, useSaved = True, rest_gen = 99):
     # read config from species_config.txt
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
                                 neat.DefaultSpeciesSet, neat.DefaultStagnation,
                                 config_file)
-
-    # initialize population
-    p = neat.Population(config)
-
-    # Add a stdout reporter to show progress in the terminal.
-    p.add_reporter(neat.StdOutReporter(True))
-    stats = neat.StatisticsReporter()
-    p.add_reporter(stats)
-
     # setup pygame
     WIDTH = 500
     HEIGHT = 500
 
-    NUMBER_0F_GEN = 100
-
     # Run for up to 50 generations.
     b = board.Board(WIDTH, HEIGHT)
+    if useSaved:
+        s = 'neat-checkpoint-{g}'.format(g = rest_gen)
+        p = neat.Checkpointer.restore_checkpoint(s)
+        p.run(b.sim_one_gen, 3)
+    else:
+        NUMBER_0F_GEN = 100
+        # initialize population
+        p = neat.Population(config)
 
-    top = p.run(b.sim_one_gen, NUMBER_0F_GEN)
+        # Add a stdout reporter to show progress in the terminal.
+        p.add_reporter(neat.StdOutReporter(True))
+        stats = neat.StatisticsReporter()
+        p.add_reporter(stats)
+        p.add_reporter(neat.Checkpointer(10))
 
-    # x axis values
-    gens = list(range(1, NUMBER_0F_GEN + 1))
-    # y axis values
-    avg_fitness = stats.get_fitness_mean()
-    best_fitness = stats.get_fitness_stat(customize_max)
+        top = p.run(b.sim_one_gen, NUMBER_0F_GEN)
 
-    plt.plot(gens, avg_fitness)
-    plt.plot(gens, best_fitness)
+        # show final stats
+        print('\nBest genome:\n{!s}'.format(top))
 
-    plt.xlabel('Generations')
-
-    # giving a title to my graph
-    plt.title('Generations vs. Fitness Score')
-
-    # function to show the plot
-    plt.show()
-
-    # show final stats
-    print('\nBest genome:\n{!s}'.format(top))
-
-
-def customize_max(values):
-    values = list(values)
-    return max(values)
+        visualize.plot_stats(stats, ylog=False, view=True)
+        visualize.plot_species(stats, view=True)
+        visualize.draw_net(config, top, True)
 
 
 if __name__ == '__main__':
