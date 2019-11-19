@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import visualize
 
 
-def run(config_file, useSaved = True, rest_gen = 99):
+def run(config_file, useSaved=False, rest_gen=99):
     # read config from species_config.txt
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
                                 neat.DefaultSpeciesSet, neat.DefaultStagnation,
@@ -18,7 +18,7 @@ def run(config_file, useSaved = True, rest_gen = 99):
     # Run for up to 50 generations.
     b = board.Board(WIDTH, HEIGHT)
     if useSaved:
-        s = 'neat-checkpoint-{g}'.format(g = rest_gen)
+        s = 'neat-checkpoint-{g}'.format(g=rest_gen)
         p = neat.Checkpointer.restore_checkpoint(s)
         p.run(b.sim_one_gen, 3)
     else:

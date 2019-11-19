@@ -57,10 +57,17 @@ class Board():
 
         for i, c in enumerate(self.creatures):
             for f in c.collide(self.food):
-                if c.size > f.size:          # check if can eat
+                if c.size >= f.size:          # check if can eat
                     self.food.remove(f)
                     c.energy += f.size * self.FOOD_SCALING
+                    c.size += f.size / 5
                     self.g_l[i].fitness += f.size * self.FOOD_SCALING
+            for c2 in c.collide(self.creatures):
+                if c.size > c2.size:          # check if can eat
+                    self.creatures.remove(c2)
+                    c.energy += c2.size * self.FOOD_SCALING
+                    c.size += c2.size / 5
+                    self.g_l[i].fitness += c2.size * self.FOOD_SCALING
 
         if self.ticks_total % self.RENDER_SKIP == 0:
             self.render()
@@ -78,6 +85,8 @@ class Board():
         prey_min_r = math.sqrt(
             2)  # closest distance doesnt exist, assume infinity
         prey_min_theta = 0  # angle shouldnt matter when dist is infinity
+        pred_min_r = math.sqrt(2)
+        pred_min_theta = 0
 
         for c in self.food + self.creatures:  # iterate through all creatures and food
             # calculate distance and angle to object
@@ -86,6 +95,10 @@ class Board():
                 if r < prey_min_r:
                     prey_min_r = r
                     prey_min_theta = theta
+            if c.size > size:  # is pred
+                if r < pred_min_r:
+                    pred_min_r = r
+                    pred_min_theta = theta
 
         if self.DEBUG:
             if prey_min_r != math.sqrt(2):
@@ -97,12 +110,14 @@ class Board():
                                  (int(x), int(y)), (x2, y2), 1)
             pygame.display.flip()
 
-        return self.scale(prey_min_r, prey_min_theta)
+        return self.scale(prey_min_r, prey_min_theta, pred_min_r, pred_min_theta)
 
-    def scale(self, rr, rt):
+    def scale(self, rr, rt, pr, pt):
         x0 = (1 - rr) * 2
         x1 = rt / (math.pi)
-        return [x0 - 1, x1]
+        x2 = (1 - pr) * 2
+        x3 = pt / (math.pi)
+        return [x0 - 1, x1, x2 - 1, x3]
 
     def sim_one_gen(self, genomes: [(int, neat.genome.DefaultGenome)], config: neat.config.Config):
         '''
@@ -137,7 +152,7 @@ class Board():
                 genome, config)  # from python-neat
             nets.append(net)
             c = creatures.Creature(x=random.randint(0, self.width), y=random.randint(
-                0, self.height), size=8)  # create creature
+                0, self.height), size=5)  # create creature
             self.creatures.append(c)
             self.g_l.append(genome)  # append genome to genome list
 
@@ -154,10 +169,10 @@ class Board():
                     self.creatures.pop(c_i)
                     nets.pop(c_i)
                 else:
-                    r, theta = self.closest(
+                    r, theta, r1, theta1 = self.closest(
                         creature.x, creature.y, creature.size)
 
-                    input = [r, theta, creature.angle,
+                    input = [r, theta, r1, theta1, creature.angle,
                              creature.velocity / 5]
 
                     # get neural network output given input
